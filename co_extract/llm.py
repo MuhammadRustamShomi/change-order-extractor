@@ -16,7 +16,9 @@ Design choices:
 
 from __future__ import annotations
 
+import logging
 import os
+import time
 from typing import Literal
 
 from pydantic import BaseModel
@@ -74,6 +76,39 @@ class LLMUnavailable(RuntimeError):
     """Raised when no API key is configured or the API call fails."""
 
 
+log = logging.getLogger(__name__)
+
+MAX_RATE_LIMIT_RETRIES = 5  # waits 10s, 20s, 40s, 80s, 160s
+BASE_BACKOFF_SECONDS = 10
+_last_call_at: float | None = None
+
+
+def _pace() -> None:
+    """Optional spacing between calls: LLM_DELAY_SECONDS (default 0 = off)."""
+    global _last_call_at
+    delay = float(os.getenv("LLM_DELAY_SECONDS", "0") or 0)
+    if delay > 0 and _last_call_at is not None:
+        wait = delay - (time.monotonic() - _last_call_at)
+        if wait > 0:
+            time.sleep(wait)
+    _last_call_at = time.monotonic()
+
+
+def _create_with_retry(client, **kwargs):
+    """chat.completions.parse, retrying 429s with exponential backoff."""
+    for attempt in range(MAX_RATE_LIMIT_RETRIES + 1):
+        _pace()
+        try:
+            return client.chat.completions.parse(**kwargs)
+        except Exception as e:
+            if getattr(e, "status_code", None) != 429 or attempt == MAX_RATE_LIMIT_RETRIES:
+                raise
+            wait = BASE_BACKOFF_SECONDS * 2**attempt
+            log.warning("LLM rate-limited (429); retry %d/%d in %ds",
+                        attempt + 1, MAX_RATE_LIMIT_RETRIES, wait)
+            time.sleep(wait)
+
+
 def extract_with_llm(text: str, client=None, model: str | None = None) -> LLMChangeOrder:
     """Call OpenAI with a strict JSON schema and return the parsed result.
 
@@ -85,11 +120,12 @@ def extract_with_llm(text: str, client=None, model: str | None = None) -> LLMCha
             raise LLMUnavailable("OPENAI_API_KEY is not set")
         from openai import OpenAI  # imported lazily: rules-only mode needs no openai
 
-        client = OpenAI()
+        client = OpenAI(max_retries=0)  # 429s are retried below, with our own backoff
 
     model = model or os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
     try:
-        resp = client.chat.completions.parse(
+        resp = _create_with_retry(
+            client,
             model=model,
             temperature=0,
             messages=[

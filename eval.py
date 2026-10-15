@@ -61,12 +61,15 @@ def is_correct(field: str, pred, truth) -> bool:
 def evaluate(set_names: list[str], use_llm: bool) -> dict:
     rows = []  # one row per (doc, field)
     doc_checks = []
+    llm_calls = {"ok": 0, "failed": 0}
     for set_name in set_names:
         base = SETS[set_name]
         for label_path in sorted((base / "labels").glob("*.json")):
             stem = label_path.stem
             truth = json.loads(label_path.read_text())
             res = extract_file(input_file(base / "raw", stem), use_llm=use_llm)
+            if use_llm and res.extractor != "none":
+                llm_calls["ok" if res.extractor == "rules+llm" else "failed"] += 1
 
             # Documents whose correct behaviour is "refuse and flag".
             if "_expect_warning" in truth:
@@ -85,13 +88,18 @@ def evaluate(set_names: list[str], use_llm: bool) -> dict:
                     conf=f.confidence, correct=is_correct(field, pred, truth.get(field)),
                     flags=f.flags,
                 ))
-    return {"rows": rows, "doc_checks": doc_checks}
+    return {"rows": rows, "doc_checks": doc_checks, "llm_calls": llm_calls}
 
 
 def report(result: dict, title: str) -> str:
     rows, out = result["rows"], []
     w = out.append
     w(f"# Eval report: {title}\n")
+    calls = result.get("llm_calls", {"ok": 0, "failed": 0})
+    if calls["ok"] or calls["failed"]:
+        total = calls["ok"] + calls["failed"]
+        status = "COMPLETE" if not calls["failed"] else "PARTIAL - NOT A FULL LLM RUN"
+        w(f"**LLM calls: {calls['ok']}/{total} succeeded, {calls['failed']} failed ({status})**\n")
     if not rows:
         return "\n".join(out)
 

@@ -17,7 +17,8 @@ from fastapi.testclient import TestClient
 
 from api import app
 from co_extract import parsing
-from co_extract.llm import LLMChangeOrder, LLMField, LLMLineItem
+from co_extract import llm
+from co_extract.llm import LLMChangeOrder, LLMField, LLMLineItem, LLMUnavailable, extract_with_llm
 from co_extract.pipeline import extract_file, extract_text
 
 RAW = Path(__file__).resolve().parent.parent / "samples" / "raw"
@@ -188,3 +189,52 @@ def test_api_upload_and_text():
 
     resp = client.post("/extract", files={"file": ("x.docx", b"hi", "application/octet-stream")})
     assert resp.status_code == 415
+
+
+# ------------------------------------------------------ 429 retry/backoff ---
+
+class _RateLimited(Exception):
+    status_code = 429
+
+
+def _flaky_client(failures: int, exc=_RateLimited):
+    good = fake_client(llm_result())
+    calls = {"n": 0}
+
+    def parse(**kw):
+        calls["n"] += 1
+        if calls["n"] <= failures:
+            raise exc("rate limited")
+        return good.chat.completions.parse(**kw)
+
+    return SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(parse=parse))), calls
+
+
+@pytest.fixture
+def sleeps(monkeypatch):
+    waited = []
+    monkeypatch.setattr(llm.time, "sleep", waited.append)
+    monkeypatch.setenv("LLM_DELAY_SECONDS", "0")
+    return waited
+
+
+def test_429_is_retried_with_exponential_backoff(sleeps):
+    client, calls = _flaky_client(failures=3)
+    extract_with_llm("doc", client=client)
+    assert calls["n"] == 4
+    assert sleeps == [10, 20, 40]
+
+
+def test_429_gives_up_after_five_retries(sleeps):
+    client, calls = _flaky_client(failures=99)
+    with pytest.raises(LLMUnavailable):
+        extract_with_llm("doc", client=client)
+    assert calls["n"] == 6
+    assert sleeps == [10, 20, 40, 80, 160]
+
+
+def test_non_429_errors_are_not_retried(sleeps):
+    client, calls = _flaky_client(failures=99, exc=ValueError)
+    with pytest.raises(LLMUnavailable):
+        extract_with_llm("doc", client=client)
+    assert calls["n"] == 1 and sleeps == []
