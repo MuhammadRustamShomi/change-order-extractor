@@ -4,6 +4,8 @@ Extracts structured fields from messy construction **change orders** (PDFs, emai
 
 Approach, results and failure modes are in **[WRITEUP.md](WRITEUP.md)**.
 
+Source: **[github.com/MuhammadRustamShomi/change-order-extractor](https://github.com/MuhammadRustamShomi/change-order-extractor)**
+
 ## What it does
 
 - **Fields extracted:**
