@@ -1,0 +1,16 @@
+{
+  "co_number": "COR-0031",
+  "project_name": "Harbor View Apartments, Bldg B",
+  "date": "2026-06-02",
+  "requested_by": "Bayline Framing Co.",
+  "submitted_to": "Coastal Development Group",
+  "description": "Add blocking for owner-furnished wall-mounted TVs in 42 units.",
+  "total_amount": 6830.5,
+  "currency": "USD",
+  "schedule_impact_days": 0,
+  "status": "pending",
+  "line_items": 3,
+  "_expect_flags": {
+    "total_amount": "line_items_sum_mismatch"
+  }
+}

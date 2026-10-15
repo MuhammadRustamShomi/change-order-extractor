@@ -1,0 +1,31 @@
+ACME GENERAL CONTRACTORS, INC.
+1420 Industrial Way, Las Vegas, NV 89118
+
+                         CHANGE ORDER
+
+Change Order No.: CO-014
+Project: Riverside Medical Office Building
+Project No.: 2025-118
+Date: March 4, 2026
+
+To (Owner): Riverside Health Partners LLC
+From (Contractor): Acme General Contractors, Inc.
+
+Description of Work:
+Relocate two (2) floor drains in Exam Rooms 104 and 106 per Architect's
+ASI-07. Includes saw cutting, trenching, new 2" PVC, and slab patch.
+
+Item                              Qty   Unit   Unit Price      Amount
+Saw cut & remove slab              48   SF        $12.50      $600.00
+Plumbing labor                     16   HR        $95.00    $1,520.00
+2" PVC pipe & fittings              1   LS       $385.00      $385.00
+Concrete slab patch                48   SF        $18.00      $864.00
+                                               Subtotal:    $3,369.00
+Overhead & Profit (10%)                                       $336.90
+TOTAL CHANGE ORDER AMOUNT:                                  $3,705.90
+
+Contract Time: increased by 2 working days.
+
+Status: APPROVED
+
+Owner signature: ____J. Patel______   Date: 03/06/2026

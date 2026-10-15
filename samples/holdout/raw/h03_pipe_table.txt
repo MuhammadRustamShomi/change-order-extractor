@@ -1,0 +1,13 @@
+CHANGE ORDER # 3 | Job: Oak Hollow Clubhouse | Date: 2026-09-02
+Contractor: Ironwood Steel Erectors | Owner: Oak Hollow HOA
+
+Reason for change: Owner added steel canopy over pool equipment pad.
+
+| Item | Qty | Unit | Rate | Amount |
+| Steel canopy frame | 1 | LS | 6,850.00 | 6,850.00 |
+| Crane day | 1 | DAY | 1,450.00 | 1,450.00 |
+| Galvanizing | 1 | LS | 980.00 | 980.00 |
+
+Change Order Total: $9,280.00
+Schedule: add 5 working days
+Approved by Owner: R. Kim 09/04/2026

@@ -1,0 +1,128 @@
+{
+  "source_file": "co_004_total_mismatch.txt",
+  "extractor": "rules",
+  "change_order": {
+    "co_number": {
+      "value": "0031",
+      "confidence": 0.9,
+      "source": "COR No. 0031",
+      "method": "rules",
+      "flags": []
+    },
+    "project_name": {
+      "value": "Harbor View Apartments, Bldg B",
+      "confidence": 0.9,
+      "source": "Job: Harbor View Apartments, Bldg B",
+      "method": "rules",
+      "flags": []
+    },
+    "date": {
+      "value": "2026-06-02",
+      "confidence": 0.65,
+      "source": "Date: 6/2/2026",
+      "method": "rules",
+      "flags": [
+        "ambiguous_date_format"
+      ]
+    },
+    "requested_by": {
+      "value": "Bayline Framing Co.",
+      "confidence": 0.9,
+      "source": "Submitted by: Bayline Framing Co.",
+      "method": "rules",
+      "flags": []
+    },
+    "submitted_to": {
+      "value": "Coastal Development Group",
+      "confidence": 0.9,
+      "source": "Submitted to: Coastal Development Group",
+      "method": "rules",
+      "flags": []
+    },
+    "description": {
+      "value": "Add blocking for owner-furnished wall-mounted TVs in 42 units.",
+      "confidence": 0.9,
+      "source": "Description: Add blocking for owner-furnished wall-mounted TVs in 42 units.",
+      "method": "rules",
+      "flags": []
+    },
+    "line_items": {
+      "value": [
+        {
+          "description": "Labor",
+          "quantity": 84.0,
+          "unit": "HR",
+          "unit_price": 68.0,
+          "amount": 5712.0,
+          "source": "Labor          84 HR   @ $68.00     $5,712.00"
+        },
+        {
+          "description": "Lumber 2x10",
+          "quantity": 42.0,
+          "unit": "EA",
+          "unit_price": 14.25,
+          "amount": 598.5,
+          "source": "Lumber 2x10    42 EA   @ $14.25       $598.50"
+        },
+        {
+          "description": "Fasteners",
+          "quantity": 1.0,
+          "unit": "LS",
+          "unit_price": null,
+          "amount": 120.0,
+          "source": "Fasteners       1 LS                  $120.00"
+        }
+      ],
+      "confidence": 0.7,
+      "source": "3 item lines",
+      "method": "rules",
+      "flags": [
+        "line_items_sum_mismatch:total=6830.50"
+      ]
+    },
+    "total_amount": {
+      "value": 6830.5,
+      "confidence": 0.55,
+      "source": "TOTAL:  $6,830.50",
+      "method": "rules",
+      "flags": [
+        "line_items_sum_mismatch:items=6430.50"
+      ]
+    },
+    "currency": {
+      "value": "USD",
+      "confidence": 0.85,
+      "source": "$ symbol",
+      "method": "rules",
+      "flags": [
+        "dollar_sign_assumed_usd"
+      ]
+    },
+    "schedule_impact_days": {
+      "value": 0,
+      "confidence": 0.9,
+      "source": "Schedule impact: none",
+      "method": "rules",
+      "flags": []
+    },
+    "status": {
+      "value": "pending",
+      "confidence": 0.7,
+      "source": "Approved: ____________  Date: ______",
+      "method": "rules",
+      "flags": [
+        "blank_approval_line"
+      ]
+    }
+  },
+  "document_confidence": 0.55,
+  "needs_review": true,
+  "review_reasons": [
+    "date: low confidence (0.65) ambiguous_date_format",
+    "total_amount: low confidence (0.55) line_items_sum_mismatch:items=6430.50",
+    "status: low confidence (0.70)"
+  ],
+  "warnings": [
+    "line items sum to 6430.50 but stated total is 6830.50"
+  ]
+}
