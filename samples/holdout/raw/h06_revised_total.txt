@@ -1,0 +1,15 @@
+CHANGE ORDER REQUEST #  COR-118
+Project: Silver Creek Data Center - Hall B
+Date: 09/30/2026
+Submitted by: Voltline Electrical Contractors
+Submitted to: Turner-Hayes Construction
+
+Description: Add (4) 400A busway plug-in units at rows B7-B10 per RFI-212.
+
+Material - busway plugs     4   EA   $3,125.00   $12,500.00
+Labor - install & test     32   HR      $98.00    $3,136.00
+Total                                           $15,636.00
+REVISED TOTAL (per 10/01 call)                  $14,900.00
+
+Time impact: 2 working days
+Status: Pending

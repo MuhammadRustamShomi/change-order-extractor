@@ -1,0 +1,13 @@
+{
+  "co_number": "COR-118",
+  "project_name": "Silver Creek Data Center - Hall B",
+  "date": "2026-09-30",
+  "requested_by": "Voltline Electrical Contractors",
+  "submitted_to": "Turner-Hayes Construction",
+  "description": "Add (4) 400A busway plug-in units at rows B7-B10 per RFI-212.",
+  "total_amount": 14900.0,
+  "currency": "USD",
+  "schedule_impact_days": 2,
+  "status": "pending",
+  "line_items": 2
+}

@@ -1,0 +1,13 @@
+{
+  "co_number": "CO-014",
+  "project_name": "Riverside Medical Office Building",
+  "date": "2026-03-04",
+  "requested_by": "Acme General Contractors, Inc.",
+  "submitted_to": "Riverside Health Partners LLC",
+  "description": "Relocate two (2) floor drains in Exam Rooms 104 and 106 per Architect's ASI-07. Includes saw cutting, trenching, new 2\" PVC, and slab patch.",
+  "total_amount": 3705.9,
+  "currency": "USD",
+  "schedule_impact_days": 2,
+  "status": "approved",
+  "line_items": 5
+}
